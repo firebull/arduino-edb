@@ -5,7 +5,7 @@
   http://www.arduino.cc/playground/Code/ExtendedDatabaseLibrary
 
   Based on code from:
-  Database library for Arduino 
+  Database library for Arduino
   Written by Madhusudana das
   http://www.arduino.cc/playground/Code/DatabaseLibrary
 
@@ -24,8 +24,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "WProgram.h"
-#include "EDB.h"
+ #include "Arduino.h"
+ #include "EDB.h"
 
 /**************************************************/
 // private functions
@@ -39,7 +39,7 @@ void EDB::edbWrite(unsigned long ee, const byte* p, unsigned int recsize)
 
 // low level byte read
 void EDB::edbRead(unsigned long ee, byte* p, unsigned int recsize)
-{  
+{
   for (unsigned i = 0; i < recsize; i++)
     *p++ = _read_byte(ee++);
 }
@@ -65,7 +65,7 @@ EDB::EDB(EDB_Write_Handler *w, EDB_Read_Handler *r)
   _read_byte = r;
 }
 
-// creates a new table and sets header values 
+// creates a new table and sets header values
 EDB_Status EDB::create(unsigned long head_ptr, unsigned long tablesize, unsigned int recsize)
 {
   EDB_head_ptr = head_ptr;
@@ -81,6 +81,7 @@ EDB_Status EDB::create(unsigned long head_ptr, unsigned long tablesize, unsigned
 EDB_Status EDB::open(unsigned long head_ptr)
 {
   EDB_head_ptr = head_ptr;
+  EDB_table_ptr = sizeof(EDB_Header) + EDB_head_ptr;
   readHead();
   return EDB_OK;
 }
@@ -101,7 +102,7 @@ EDB_Status EDB::readRec(unsigned long recno, EDB_Rec rec)
 }
 
 // Deletes a record at a given recno
-// Becomes more inefficient as you the record set increases and you delete records 
+// Becomes more inefficient as you the record set increases and you delete records
 // early in the record queue.
 EDB_Status EDB::deleteRec(unsigned long recno)
 {
@@ -111,7 +112,7 @@ EDB_Status EDB::deleteRec(unsigned long recno)
   {
     readRec(i, rec);
     writeRec(i - 1, rec);
-  }  
+  }
   free(rec);
   EDB_head.n_recs--;
   writeHead();
@@ -119,7 +120,7 @@ EDB_Status EDB::deleteRec(unsigned long recno)
 }
 
 // Inserts a record at a given recno, increasing all following records' recno by 1.
-// This function becomes increasingly inefficient as it's currently implemented and 
+// This function becomes increasingly inefficient as it's currently implemented and
 // is the slowest way to add a record.
 EDB_Status EDB::insertRec(unsigned long recno, EDB_Rec rec)
 {
@@ -134,7 +135,7 @@ EDB_Status EDB::insertRec(unsigned long recno, EDB_Rec rec)
     writeRec(i + 1, buf);
   }
   free(buf);
-  writeRec(recno, rec);  
+  writeRec(recno, rec);
   EDB_head.n_recs++;
   writeHead();
   return EDB_OK;
@@ -144,7 +145,7 @@ EDB_Status EDB::insertRec(unsigned long recno, EDB_Rec rec)
 EDB_Status EDB::updateRec(unsigned long recno, EDB_Rec rec)
 {
   if (recno < 0 || recno > EDB_head.n_recs) return EDB_OUT_OF_RANGE;
-  writeRec(recno, rec);  
+  writeRec(recno, rec);
   return EDB_OK;
 }
 
