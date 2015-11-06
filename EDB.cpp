@@ -70,6 +70,7 @@ EDB_Status EDB::create(unsigned long head_ptr, unsigned long tablesize, unsigned
 {
   EDB_head_ptr = head_ptr;
   EDB_table_ptr = sizeof(EDB_Header) + EDB_head_ptr;
+  EDB_head.flag = EDB_FLAG;
   EDB_head.n_recs = 0;
   EDB_head.rec_size = recsize;
   EDB_head.table_size = tablesize;
@@ -83,7 +84,11 @@ EDB_Status EDB::open(unsigned long head_ptr)
   EDB_head_ptr = head_ptr;
   EDB_table_ptr = sizeof(EDB_Header) + EDB_head_ptr;
   readHead();
-  return EDB_OK;
+  if (EDB_head.flag == EDB_FLAG){
+      return EDB_OK;
+  } else {
+      return EDB_ERROR;
+  }
 }
 
 // writes a record to a given recno

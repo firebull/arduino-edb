@@ -5,7 +5,7 @@
   http://www.arduino.cc/playground/Code/ExtendedDatabaseLibrary
 
   Based on code from:
-  Database library for Arduino 
+  Database library for Arduino
   Written by Madhusudana das
   http://www.arduino.cc/playground/Code/DatabaseLibrary
 
@@ -26,16 +26,19 @@
 
 #ifndef EDB_PROM
 #define EDB_PROM
+#define EDB_FLAG B11011011
 
 struct EDB_Header
 {
+  byte flag;
   unsigned long n_recs;
   unsigned int rec_size;
   unsigned long table_size;
 };
 
-typedef enum EDB_Status { 
+typedef enum EDB_Status {
                           EDB_OK,
+                          EDB_ERROR,
                           EDB_OUT_OF_RANGE,
                           EDB_TABLE_FULL
                         };
@@ -52,7 +55,7 @@ class EDB {
     EDB_Status create(unsigned long, unsigned long, unsigned int);
     EDB_Status open(unsigned long);
     EDB_Status readRec(unsigned long, EDB_Rec);
-    EDB_Status deleteRec(unsigned long);	
+    EDB_Status deleteRec(unsigned long);
     EDB_Status insertRec(unsigned long, const EDB_Rec);
     EDB_Status updateRec(unsigned long, const EDB_Rec);
     EDB_Status appendRec(EDB_Rec rec);

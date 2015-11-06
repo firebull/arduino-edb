@@ -57,7 +57,7 @@ void setup()
 
   randomSeed(analogRead(0));
 
-  Serial.print("Creating table...");
+  Serial.print("Creating table... ");
   // create table at with starting address 0
   db.create(0, TABLE_SIZE, (unsigned int)sizeof(logEvent));
   Serial.println("DONE");
@@ -110,7 +110,7 @@ void deleteOneRecord(int recno)
 
 void deleteAll()
 {
-  Serial.print("Truncating table...");
+  Serial.print("Truncating table... ");
   db.clear();
   Serial.println("DONE");
 }
@@ -123,7 +123,7 @@ void countRecords()
 
 void createRecords(int num_recs)
 {
-  Serial.print("Creating Records...");
+  Serial.print("Creating Records... ");
   for (int recno = 1; recno <= num_recs; recno++)
   {
     logEvent.id = recno;
@@ -178,7 +178,7 @@ void insertOneRecord(int recno)
 
 void appendOneRecord(int id)
 {
-  Serial.print("Appending record...");
+  Serial.print("Appending record... ");
   logEvent.id = id;
   logEvent.temperature = random(1, 125);
   EDB_Status result = db.appendRec(EDB_REC logEvent);
