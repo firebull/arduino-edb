@@ -36,7 +36,7 @@ struct EDB_Header
   unsigned long table_size;
 };
 
-typedef enum EDB_Status {
+enum EDB_Status {
                           EDB_OK,
                           EDB_ERROR,
                           EDB_OUT_OF_RANGE,
